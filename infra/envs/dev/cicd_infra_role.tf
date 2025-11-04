@@ -36,7 +36,8 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "s3:DeleteObject",
           "s3:ListBucket",
           "s3:GetBucketLocation",
-          "s3:GetBucketPolicy" # <<< added
+          "s3:GetBucketPolicy",
+          "s3:GetBucketAcl" # <<< ADDED
         ],
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
@@ -60,9 +61,10 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
       {
         Effect = "Allow"
         Action = [
-          "iam:GetRole",          # <<< added (read existing roles)
-          "iam:ListRolePolicies", # <<< added (list inline policies)
-          "iam:GetRolePolicy"     # <<< added (read inline policy content)
+          "iam:GetRole",
+          "iam:ListRolePolicies",
+          "iam:GetRolePolicy",
+          "iam:ListAttachedRolePolicies" # <<< ADDED
         ],
         Resource = [
           "arn:aws:iam::608145123666:role/github-infra-dev",
