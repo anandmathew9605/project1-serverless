@@ -25,5 +25,5 @@ jobs:
 
       - name: Sync to S3 (dev)
         run: |
-          aws s3 sync web/src s3://project1-serverless-dev-website --delete --acl public-read
+          aws s3 sync web/src s3://project1-serverless-dev-website --delete
 
