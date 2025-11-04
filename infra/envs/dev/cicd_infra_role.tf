@@ -35,7 +35,8 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "s3:PutObject",
           "s3:DeleteObject",
           "s3:ListBucket",
-          "s3:GetBucketLocation"
+          "s3:GetBucketLocation",
+          "s3:GetBucketPolicy" # <<< added
         ],
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
@@ -45,7 +46,7 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
         ]
       },
       {
-        Effect = "Allow",
+        Effect = "Allow"
         Action = [
           "dynamodb:GetItem",
           "dynamodb:PutItem",
@@ -55,6 +56,18 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "dynamodb:UpdateItem"
         ],
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "iam:GetRole",          # <<< added (read existing roles)
+          "iam:ListRolePolicies", # <<< added (list inline policies)
+          "iam:GetRolePolicy"     # <<< added (read inline policy content)
+        ],
+        Resource = [
+          "arn:aws:iam::608145123666:role/github-infra-dev",
+          "arn:aws:iam::608145123666:role/github-web-dev"
+        ]
       }
     ]
   })
