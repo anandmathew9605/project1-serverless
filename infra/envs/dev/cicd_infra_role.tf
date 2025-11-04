@@ -38,7 +38,8 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "s3:GetBucketLocation",
           "s3:GetBucketPolicy",
           "s3:GetBucketAcl",
-          "s3:GetBucketCORS" # <<< ADDED
+          "s3:GetBucketCORS",
+          "s3:GetBucketWebsite"
         ],
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
@@ -65,7 +66,8 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "iam:GetRole",
           "iam:ListRolePolicies",
           "iam:GetRolePolicy",
-          "iam:ListAttachedRolePolicies" # <<< ADDED
+          "iam:ListAttachedRolePolicies"
+
         ],
         Resource = [
           "arn:aws:iam::608145123666:role/github-infra-dev",
