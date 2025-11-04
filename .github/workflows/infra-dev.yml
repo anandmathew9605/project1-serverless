@@ -1,0 +1,34 @@
+name: infra-dev
+
+on:
+  push:
+    branches: ["dev"]
+    paths:
+      - "infra/envs/dev/**"      # only run when infra files change
+      - ".github/workflows/infra-dev.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/github-infra-dev
+          aws-region: ap-south-1
+
+      - name: Terraform Init & Apply (dev)
+        run: |
+          cd infra/envs/dev
+          terraform init
+          terraform plan -out=tfplan
+          terraform apply -auto-approve tfplan
+
