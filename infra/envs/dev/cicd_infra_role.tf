@@ -37,7 +37,8 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "s3:ListBucket",
           "s3:GetBucketLocation",
           "s3:GetBucketPolicy",
-          "s3:GetBucketAcl" # <<< ADDED
+          "s3:GetBucketAcl",
+          "s3:GetBucketCORS" # <<< ADDED
         ],
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
