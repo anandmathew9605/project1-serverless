@@ -39,6 +39,7 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "s3:GetBucketPolicy",
           "s3:GetBucketAcl",
           "s3:GetBucketCORS",
+          "s3:GetBucketVersioning",
           "s3:GetBucketWebsite"
         ],
         Resource = [
