@@ -30,29 +30,7 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
     Statement = [
       {
         Effect = "Allow"
-        Action = [
-          "s3:GetObject",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketAcl",
-          "s3:GetBucketCORS",
-          "s3:GetBucketWebsite",
-          "s3:GetBucketVersioning",
-          "s3:GetAccelerateConfiguration",
-          "s3:GetEncryptionConfiguration",
-          "s3:GetBucketLocation",
-          "s3:ListBucket",
-          "s3:GetObject",
-          "s3:ListBucketMultipartUploads",
-          "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket",
-          "s3:GetBucketLocation",
-          "s3:GetBucketPolicy",
-          "s3:GetBucketAcl",
-          "s3:GetBucketCORS",
-          "s3:GetBucketVersioning",
-          "s3:GetBucketWebsite"
-        ],
+        Action = "s3:*"
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
           "arn:aws:s3:::project1-serverless-terraform-state/*",
