@@ -4,15 +4,15 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "infra/envs/dev/**"      # only run when infra files change
+      - "infra/envs/dev/**"
       - ".github/workflows/infra_dev.yml"
 
 permissions:
-  id-token: write        # <<< REQUIRED for OIDC
-  contents: read   
+  id-token: write
+  contents: read
 
 jobs:
-  infra_dev:
+  infra_dev_plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +26,41 @@ jobs:
           role-to-assume: arn:aws:iam::608145123666:role/github-infra-dev
           aws-region: ap-south-1
 
-      - name: Terraform Init & Apply (dev)
+      - name: Terraform Init & Plan
         run: |
           cd infra/envs/dev
           terraform init
           terraform plan -out=tfplan
-          # Auto-approval is enabled for the dev environment to streamline CI/CD and avoid manual intervention.
-          terraform apply -auto-approve tfplan
 
+      - name: Upload tfplan artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: infra/envs/dev/tfplan
+
+  infra_dev_apply:
+    needs: [infra_dev_plan]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/github-infra-dev
+          aws-region: ap-south-1
+
+      - name: Download tfplan artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+          path: infra/envs/dev
+
+      - name: Terraform init & apply (dev)
+        run: |
+          cd infra/envs/dev
+          terraform init
+          terraform apply -auto-approve tfplan
