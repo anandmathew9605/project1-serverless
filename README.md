@@ -53,29 +53,26 @@ The overall design follows a **two-environment serverless architecture** with co
 
 ---
 
-## 🧩 CI/CD Architecture Diagram  
+### 🧩 CI/CD Architecture Diagram
 
-```mermaid
 flowchart LR
-  A[Developer] -->|push / pull request| B[GitHub Repository]
+  A[Developer] -->|Push / Pull Request| B[GitHub Repository]
   B --> C{GitHub Actions}
 
   subgraph Dev [Development Environment]
-    C -->|Push to dev branch| D[web-dev.yml\nSync app to S3 (Dev)]
-    C -->|Push to dev branch| E[infra-dev.yml\nTerraform plan & apply]
+    C -->|Push to dev branch| D["web-dev.yml<br/>Sync app to S3 (Dev)"]
+    C -->|Push to dev branch| E["infra-dev.yml<br/>Terraform plan & apply"]
   end
 
   subgraph Prod [Production Environment]
-    C -->|PR to main| F[infra-prod.yml\nTerraform plan]
-    C -->|PR to main| G[web-prod.yml\nSync app to S3 (Prod)]
-    F -->|Merge / Push to main| H[infra-prod.yml\nTerraform apply]
-    G -->|Merge / Push to main| I[CloudFront + S3 (Prod)]
+    C -->|PR to main| F["infra-prod.yml<br/>Terraform plan"]
+    C -->|PR to main| G["web-prod.yml<br/>Sync app to S3 (Prod)"]
+    F -->|Merge / Push to main| H["infra-prod.yml<br/>Terraform apply"]
+    G -->|Merge / Push to main| I["CloudFront + S3 (Prod)"]
   end
 
+  %% (💡 note: ensure a blank line before next edges)
   H --> J[(S3: Terraform State)]
   H --> K[(DynamoDB: State Lock)]
   I --> L[CloudFront Distribution]
   L --> M[Route53 + ACM]
-
-
-
