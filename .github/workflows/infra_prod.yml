@@ -1,0 +1,33 @@
+name: infra_prod
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "infra/envs/prod/**"
+      - ".github/workflows/infra_prod.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  infra_prod_plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/github-infra-prod
+          aws-region: ap-south-1
+
+      - name: Terraform Init & Plan (prod)
+        run: |
+          cd infra/envs/prod
+          terraform init
+          terraform plan -out=tfplan
