@@ -1,7 +1,7 @@
 name: web_prod
 
 on:
-  pull_request:
+  push:
     branches: ["main"]
     paths:
       - "web/src/**"
