@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Anand's portfolio showcasing serverless architecture, cloud hosting, and modern web development projects. Built with AWS Lambda, DynamoDB, and modern web technologies.">
+    <meta name="keywords" content="portfolio, web development, serverless, AWS, cloud computing, JavaScript, Lambda, DynamoDB, API Gateway">
+    <meta name="author" content="Anand">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Anand's Portfolio Projects">
+    <meta property="og:description" content="Showcasing serverless architecture and modern web development projects">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://anandmathew.site">
+    <title>Anand's Portfolio Projects</title>
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+    <div class="container">
+        <!-- Theme Toggle and GitHub -->
+        <div class="top-controls">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Switch between light and dark mode">
+                <svg class="theme-icon moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <svg class="theme-icon sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+            </button>
+            <a href="https://github.com/anandmathew" class="github-link" target="_blank" aria-label="Visit GitHub profile" rel="noopener noreferrer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">ANAND'S CLOUD-DEVOPS PROJECTS</h1>
+            <p class="visitor-text">Hello there! You're the <span class="visitor-count">0th</span> visitor. I truly appreciate your time and interest</p>
+        </header>
+
+        <!-- Projects Grid -->
+        <main class="projects-grid">
+            <!-- Serverless Architecture -->
+            <div class="project-card selected">
+                <div class="project-header">
+                    <h2 class="project-title">SERVERLESS<br>ARCHITECTURE</h2>
+                    <button class="project-button current" aria-label="Current project" disabled>YOU ARE HERE</button>
+                </div>
+                <div class="project-description">
+                    <p>A modern, event-driven web app built using AWS Lambda and API Gateway. Eliminates server management while maintaining scalability and reliability.</p>
+                    <ul class="tech-list">
+                        <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                        <li><strong>Backend:</strong> AWS Lambda, API Gateway</li>
+                        <li><strong>Database:</strong> Amazon DynamoDB</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Traditional Web Hosting -->
+            <div class="project-card">
+                <div class="project-status-badge live">Live</div>
+                <div class="project-header">
+                    <h2 class="project-title">TRADITIONAL WEB<br>HOSTING</h2>
+                    <a href="#" target="_blank" class="project-button website" rel="noopener noreferrer" data-placeholder="true">VISIT WEBSITE</a>
+                </div>
+                <div class="project-description">
+                    <p>A scalable web app hosted on EC2 instances with RDS backend. Demonstrates manual provisioning, scaling, and deployment practices.</p>
+                    <ul class="tech-list">
+                        <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                        <li><strong>Hosting:</strong> Amazon EC2</li>
+                        <li><strong>Database:</strong> Amazon RDS</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Modern Web Hosting -->
+            <div class="project-card">
+                <div class="project-status-badge live">Live</div>
+                <div class="project-header">
+                    <h2 class="project-title">MODERN WEB<br>HOSTING</h2>
+                    <a href="#" target="_blank" class="project-button website" rel="noopener noreferrer" data-placeholder="true">VISIT WEBSITE</a>
+                </div>
+                <div class="project-description">
+                    <p>A containerized web app deployed using Docker and ECS Fargate. Highlights automation, CI/CD integration, and efficient scaling.</p>
+                    <ul class="tech-list">
+                        <li><strong>Frontend:</strong> React, Tailwind CSS</li>
+                        <li><strong>Hosting:</strong> AWS ECS Fargate</li>
+                        <li><strong>Database:</strong> Amazon RDS</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Cloud Experiment Lab -->
+            <div class="project-card">
+                <div class="project-status-badge live">Live</div>
+                <div class="project-header">
+                    <h2 class="project-title">CLOUD<br>EXPERIMENT LAB</h2>
+                    <a href="#" target="_blank" class="project-button website" rel="noopener noreferrer" data-placeholder="true">VISIT WEBSITE</a>
+                </div>
+                <div class="project-description">
+                    <p>A collection of hands-on cloud experiments and automation scripts. Focused on exploring AWS services and DevOps workflows.</p>
+                    <ul class="tech-list">
+                        <li><strong>Projects:</strong> IaC, Monitoring, Networking</li>
+                        <li><strong>Tools:</strong> Terraform, CloudWatch, Jenkins</li>
+                        <li><strong>Repo:</strong> GitHub Public</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js" defer></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Anand",
+        "url": "https://anandmathew.site",
+        "jobTitle": "Web Developer",
+        "knowsAbout": ["Serverless Architecture", "AWS", "JavaScript", "Web Development", "Cloud Computing"]
+    }
+    </script>
+</body>
+</html>
