@@ -1,32 +1,30 @@
 resource "aws_iam_role" "github_infra_prod" {
   name = "github-infra-prod"
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect    = "Allow"
-        Principal = { Federated = "arn:aws:iam::608145123666:oidc-provider/token.actions.githubusercontent.com" }
-        Action    = "sts:AssumeRoleWithWebIdentity"
-        Condition = {
-          StringEquals = {
-            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-            # allow PR plan and push/apply to main
-            "token.actions.githubusercontent.com:sub" = [
-              "repo:anandmathew9605/project1-serverless:ref:refs/heads/main",
-              "repo:anandmathew9605/project1-serverless:ref:refs/pull/*"
-            ]
-          }
+  assume_role_policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::608145123666:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": "repo:anandmathew9605/project1-serverless:*"
         }
       }
-    ]
-  })
+    }
+  ]
+}
+POLICY
 }
 
-# Minimal (slightly permissive) policy to unblock Terraform runs for prod.
-# We'll tighten this later. Grants S3 full control on project buckets/state,
-# DynamoDB locking actions, CloudFront manage & ACM describe/validate actions,
-# and read IAM role policy metadata.
 resource "aws_iam_role_policy" "github_infra_prod_policy" {
   name = "github-infra-prod-policy"
   role = aws_iam_role.github_infra_prod.id
@@ -34,7 +32,6 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
-      # S3 full for state + prod & dev website buckets (keeps Terraform happy)
       {
         Effect = "Allow"
         Action = "s3:*"
@@ -47,13 +44,11 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
           "arn:aws:s3:::project1-serverless-dev-website/*"
         ]
       },
-      # allow listing buckets (Terraform sometimes queries)
       {
-        Effect   = "Allow"
-        Action   = ["s3:ListAllMyBuckets"]
+        Effect = "Allow"
+        Action = [ "s3:ListAllMyBuckets" ]
         Resource = "*"
       },
-      # DynamoDB lock table actions
       {
         Effect = "Allow"
         Action = [
@@ -66,20 +61,26 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
       },
-      # CloudFront and ACM minimal management rights (broad for quick start)
+            
+      # CloudFront permissions: Required for managing CDN distributions and performing cache invalidations
+      # This allows Terraform to create, update, delete, and invalidate CloudFront distributions for website deployments.
       {
         Effect = "Allow"
         Action = [
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetDistribution",
-          "cloudfront:ListDistributions",
-          "cloudfront:GetDistributionConfig",
-          "cloudfront:UpdateDistribution",
           "cloudfront:CreateDistribution",
-          "cloudfront:DeleteDistribution"
+          "cloudfront:UpdateDistribution",
+          "cloudfront:GetDistribution",
+          "cloudfront:GetDistributionConfig",
+          "cloudfront:ListDistributions",
+          "cloudfront:DeleteDistribution",
+          "cloudfront:CreateInvalidation",
+          "cloudfront:GetInvalidation",
+          "cloudfront:ListInvalidations"
         ]
         Resource = "*"
       },
+      # ACM permissions: Needed for requesting, describing, listing, deleting, and tagging SSL certificates
+      # These permissions enable automated certificate management for secure HTTPS on CloudFront distributions.
       {
         Effect = "Allow"
         Action = [
@@ -91,14 +92,30 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
         Resource = "*"
       },
-      # IAM read actions (Terraform reads role/policy metadata)
+      # Route53 permissions: Required for managing DNS records and validating certificates
+      # This allows Terraform to update DNS records for domain validation and configure aliases for CloudFront.
+      {
+        Effect = "Allow"
+        Action = [
+          "route53:ListHostedZones",
+          "route53:GetHostedZone",
+          "route53:ChangeResourceRecordSets",
+          "route53:ListResourceRecordSets",
+          "route53:GetChange"
+        ]
+        Resource = "*"
+      },
+
+
+
+
       {
         Effect = "Allow"
         Action = [
           "iam:GetRole",
           "iam:GetRolePolicy",
-          "iam:ListAttachedRolePolicies",
-          "iam:ListRolePolicies"
+          "iam:ListRolePolicies",
+          "iam:ListAttachedRolePolicies"
         ]
         Resource = [
           "arn:aws:iam::608145123666:role/github-infra-prod",
