@@ -46,8 +46,8 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
       },
       {
-        Effect = "Allow",
-        Action = [ "s3:ListAllMyBuckets" ],
+        Effect   = "Allow",
+        Action   = ["s3:ListAllMyBuckets"],
         Resource = "*"
       },
 
