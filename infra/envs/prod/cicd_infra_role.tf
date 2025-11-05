@@ -30,11 +30,12 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
   role = aws_iam_role.github_infra_prod.id
 
   policy = jsonencode({
-    Version = "2012-10-17"
+    Version = "2012-10-17",
     Statement = [
+      # --- S3 full (state + website buckets)
       {
-        Effect = "Allow"
-        Action = "s3:*"
+        Effect = "Allow",
+        Action = "s3:*",
         Resource = [
           "arn:aws:s3:::project1-serverless-terraform-state",
           "arn:aws:s3:::project1-serverless-terraform-state/*",
@@ -45,12 +46,14 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
       },
       {
-        Effect = "Allow"
-        Action = [ "s3:ListAllMyBuckets" ]
+        Effect = "Allow",
+        Action = [ "s3:ListAllMyBuckets" ],
         Resource = "*"
       },
+
+      # --- DynamoDB (state lock table)
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "dynamodb:GetItem",
           "dynamodb:PutItem",
@@ -58,73 +61,53 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
           "dynamodb:DescribeTable",
           "dynamodb:Query",
           "dynamodb:UpdateItem"
-        ]
+        ],
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
       },
-            
-      # CloudFront permissions: Required for managing CDN distributions and performing cache invalidations
-      # This allows Terraform to create, update, delete, and invalidate CloudFront distributions for website deployments.
-      {
-        Effect = "Allow"
-        Action = [
-          "cloudfront:CreateDistribution",
-          "cloudfront:UpdateDistribution",
-          "cloudfront:GetDistribution",
-          "cloudfront:GetDistributionConfig",
-          "cloudfront:ListDistributions",
-          "cloudfront:DeleteDistribution",
-          "cloudfront:CreateInvalidation",
-          "cloudfront:GetInvalidation",
-          "cloudfront:ListInvalidations"
-        ]
-        Resource = "*"
-      },
-      # ACM permissions: Needed for requesting, describing, listing, deleting, and tagging SSL certificates
-      # These permissions enable automated certificate management for secure HTTPS on CloudFront distributions.
-      {
-        Effect = "Allow"
-        Action = [
-          "acm:RequestCertificate",
-          "acm:DescribeCertificate",
-          "acm:ListCertificates",
-          "acm:DeleteCertificate",
-          "acm:AddTagsToCertificate"
-        ]
-        Resource = "*"
-      },
-      # Route53 permissions: Required for managing DNS records and validating certificates
-      # This allows Terraform to update DNS records for domain validation and configure aliases for CloudFront.
-      {
-        Effect = "Allow"
-        Action = [
-          "route53:ListHostedZones",
-          "route53:GetHostedZone",
-          "route53:ChangeResourceRecordSets",
-          "route53:ListResourceRecordSets",
-          "route53:GetChange"
-        ]
-        Resource = "*"
-      },
 
-
-
-
+      # --- IAM (read roles/policies)
       {
-        Effect = "Allow"
+        Effect = "Allow",
         Action = [
           "iam:GetRole",
           "iam:GetRolePolicy",
           "iam:ListRolePolicies",
           "iam:ListAttachedRolePolicies"
-        ]
+        ],
         Resource = [
           "arn:aws:iam::608145123666:role/github-infra-prod",
           "arn:aws:iam::608145123666:role/github-web-prod",
           "arn:aws:iam::608145123666:role/github-infra-dev",
           "arn:aws:iam::608145123666:role/github-web-dev"
         ]
+      },
+
+      # --- CloudFront (read + manage)
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudfront:*"
+        ],
+        Resource = "*"
+      },
+
+      # --- ACM (read + request/delete/list tags)
+      {
+        Effect = "Allow",
+        Action = [
+          "acm:*"
+        ],
+        Resource = "*"
+      },
+
+      # --- Route53 (zones, records, tags)
+      {
+        Effect = "Allow",
+        Action = [
+          "route53:*"
+        ],
+        Resource = "*"
       }
     ]
   })
 }
-# Updated policy for cicd  
