@@ -127,3 +127,4 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
     ]
   })
 }
+# Updated policy for cicd  
