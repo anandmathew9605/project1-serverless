@@ -37,7 +37,9 @@ jobs:
         with:
           name: tfplan
           path: infra/envs/prod/tfplan
+
   infra_prod_apply:
+    needs: [infra_prod_plan] 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
