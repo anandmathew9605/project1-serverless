@@ -32,7 +32,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
-      # --- S3 full (state + website buckets)
+      
       {
         Effect = "Allow",
         Action = "s3:*",
@@ -51,7 +51,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      # --- DynamoDB (state lock table)
+      
       {
         Effect = "Allow",
         Action = [
@@ -65,7 +65,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
       },
 
-      # --- IAM (read roles/policies)
+      
       {
         Effect = "Allow",
         Action = [
@@ -82,7 +82,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
       },
 
-      # --- CloudFront (read + manage)
+      
       {
         Effect = "Allow",
         Action = [
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      # --- ACM (read + request/delete/list tags)
+      
       {
         Effect = "Allow",
         Action = [
@@ -100,7 +100,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      # --- Route53 (zones, records, tags)
+      
       {
         Effect = "Allow",
         Action = [

@@ -13,5 +13,4 @@ provider "aws" {
   }
 }
 
-#comment: FOR TESTING PURPOSES ONLY
 

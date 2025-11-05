@@ -7,4 +7,3 @@ terraform {
     encrypt        = true
   }
 }
-#comment: FOR TESTING PURPOSES ONLY

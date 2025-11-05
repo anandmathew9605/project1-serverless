@@ -1,4 +1,3 @@
-# Minimal CloudFront distribution (prod)
 resource "aws_cloudfront_distribution" "prod" {
   enabled             = true
   default_root_object = "index.html"
@@ -41,7 +40,6 @@ resource "aws_cloudfront_distribution" "prod" {
   }
 }
 
-# Route53 alias to CloudFront
 resource "aws_route53_record" "prod_alias" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "serverless"

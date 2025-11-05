@@ -4,11 +4,11 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "web/src/*"         # only run when web/src files change
+      - "web/src/*"         
       - ".github/workflows/web_dev.yml"
 
 permissions:
-  id-token: write        # <<< REQUIRED for OIDC
+  id-token: write        
   contents: read
 
 jobs:
