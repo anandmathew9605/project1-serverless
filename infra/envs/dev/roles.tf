@@ -11,9 +11,12 @@ resource "aws_iam_role" "github_infra_dev" {
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
+          StringLike = {
+            # ✅ Flexible trust — allows all branches in the same repo
+            "token.actions.githubusercontent.com:sub" = "repo:anandmathew9605/project1-serverless:*"
+          }
           StringEquals = {
             "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
-            "token.actions.githubusercontent.com:sub" = "repo:anandmathew9605/project1-serverless:ref:refs/heads/dev"
           }
         }
       }
