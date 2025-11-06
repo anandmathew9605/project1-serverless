@@ -1,6 +1,6 @@
 resource "aws_lambda_function" "visitor" {
-  function_name = "project1-serverless-visitor-dev"
-  filename      = "../../../backend/artifacts/visitor.zip"
+  function_name    = "project1-serverless-visitor-dev"
+  filename         = "../../../backend/artifacts/visitor.zip"
   source_code_hash = filebase64sha256("../../../backend/artifacts/visitor.zip")
 
   handler = "app.lambda_handler"
