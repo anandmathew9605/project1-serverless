@@ -305,3 +305,26 @@ document.addEventListener('DOMContentLoaded', () => {
     new TitleEnhancer();
 });
 
+// ----------------------------
+// Visitor Counter Integration
+// ----------------------------
+(async function updateVisitorCount() {
+  const apiUrl = "https://2f4r4598n7.execute-api.ap-south-1.amazonaws.com/count";
+
+  try {
+    // Increment visitor count (POST)
+    await fetch(apiUrl, { method: "POST" });
+
+    // Fetch current count (GET)
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    // Update visitor count in HTML
+    const visitorElement = document.querySelector(".visitor-count");
+    if (visitorElement && data.count !== undefined) {
+      visitorElement.textContent = data.count + "th";
+    }
+  } catch (error) {
+    console.error("Visitor counter error:", error);
+  }
+})();
