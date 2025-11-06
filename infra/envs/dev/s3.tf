@@ -46,15 +46,3 @@ resource "aws_s3_bucket_policy" "dev_website" {
   bucket = aws_s3_bucket.dev_website.id
   policy = data.aws_iam_policy_document.dev_website_public.json
 }
-
-resource "aws_s3_bucket" "deploy" {
-  bucket = "project1-serverless-dev-deploys"
-}
-
-resource "aws_s3_bucket_versioning" "deploy" {
-  bucket = aws_s3_bucket.deploy.id
-  versioning_configuration {
-    status = "Enabled"
-  }
-}
-

@@ -32,7 +32,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
-      
+
       {
         Effect = "Allow",
         Action = "s3:*",
@@ -51,7 +51,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      
+
       {
         Effect = "Allow",
         Action = [
@@ -65,7 +65,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
       },
 
-      
+
       {
         Effect = "Allow",
         Action = [
@@ -82,7 +82,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         ]
       },
 
-      
+
       {
         Effect = "Allow",
         Action = [
@@ -91,7 +91,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      
+
       {
         Effect = "Allow",
         Action = [
@@ -100,7 +100,7 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
         Resource = "*"
       },
 
-      
+
       {
         Effect = "Allow",
         Action = [
