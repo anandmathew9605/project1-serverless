@@ -63,6 +63,19 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
           "arn:aws:iam::608145123666:role/github-infra-dev",
           "arn:aws:iam::608145123666:role/github-web-dev"
         ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:*",
+          "dynamodb:*",
+          "apigateway:*",
+          "iam:*",
+          "lambda:*",
+          "cloudwatch:*",
+          "logs:*"
+        ],
+        "Resource" : "*"
       }
     ]
   })
