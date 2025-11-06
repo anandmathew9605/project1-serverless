@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  deploy_backend:
+  backend-dev:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,7 +42,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-backend-dev
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-lambda-dev
           aws-region: ap-south-1
 
       - name: Upload artifact to S3
