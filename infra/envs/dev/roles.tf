@@ -1,5 +1,5 @@
 resource "aws_iam_role" "github_infra_dev" {
-  name = "github-infra-dev"
+  name = "project1-serverless-infra-dev"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -22,7 +22,7 @@ resource "aws_iam_role" "github_infra_dev" {
 }
 
 resource "aws_iam_role_policy" "github_terraform_dev_policy" {
-  name = "github-infra-dev"
+  name = "project1-serverless-infra-dev"
   role = aws_iam_role.github_infra_dev.id
 
   policy = jsonencode({
@@ -70,7 +70,7 @@ resource "aws_iam_role_policy" "github_terraform_dev_policy" {
 
 
 resource "aws_iam_role" "github_web_dev" {
-  name = "github-web-dev"
+  name = "project1-serverless-web-dev"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -93,7 +93,7 @@ resource "aws_iam_role" "github_web_dev" {
 }
 
 resource "aws_iam_role_policy" "github_deploy_frontend_dev_policy" {
-  name = "github-web-dev"
+  name = "project1-serverless-web-dev"
   role = aws_iam_role.github_web_dev.id
 
   policy = jsonencode({
