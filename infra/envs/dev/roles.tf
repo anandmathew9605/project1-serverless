@@ -133,7 +133,7 @@ resource "aws_iam_role_policy" "github_deploy_frontend_dev_policy" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "project1-serverless-lambda-dev"
+  name = "project1-serverless-backend-dev"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -146,7 +146,7 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_role_policy" {
-  name = "project1-serverless-lambda-dev"
+  name = "project1-serverless-backend-dev"
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
