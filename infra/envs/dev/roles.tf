@@ -133,7 +133,7 @@ resource "aws_iam_role_policy" "github_deploy_frontend_dev_policy" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name = "project1-serverless-backend-dev"
+  name = "project1-serverless-lambda-dev"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17",
@@ -146,7 +146,7 @@ resource "aws_iam_role" "lambda_role" {
 }
 
 resource "aws_iam_role_policy" "lambda_role_policy" {
-  name = "project1-serverless-backend-dev"
+  name = "project1-serverless-lambda-dev"
   role = aws_iam_role.lambda_role.id
 
   policy = jsonencode({
@@ -175,3 +175,58 @@ resource "aws_iam_role_policy" "lambda_role_policy" {
   })
 }
 
+resource "aws_iam_role" "github_backend_dev" {
+  name = "project1-serverless-backend-dev"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = "arn:aws:iam::608145123666:oidc-provider/token.actions.githubusercontent.com"
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringLike = {
+            "token.actions.githubusercontent.com:sub" = "repo:anandmathew9605/project1-serverless:*"
+          },
+          StringEquals = {
+            "token.actions.githubusercontent.com:aud" = "sts.amazonaws.com"
+          }
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "github_backend_dev_policy" {
+  name = "project1-serverless-backend-dev"
+  role = aws_iam_role.github_backend_dev.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:PutObject",
+          "s3:GetObject",
+          "s3:ListBucket"
+        ],
+        Resource = [
+          "arn:aws:s3:::project1-serverless-backend-artifact",
+          "arn:aws:s3:::project1-serverless-backend-artifact/*"
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "lambda:UpdateFunctionCode",
+          "lambda:GetFunction"
+        ],
+        Resource = "arn:aws:lambda:ap-south-1:*:function:project1-serverless-visitor-dev"
+      }
+    ]
+  })
+}
