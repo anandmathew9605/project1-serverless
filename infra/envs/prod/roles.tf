@@ -35,19 +35,26 @@ resource "aws_iam_role_policy" "github_infra_prod_policy" {
       {
         Effect = "Allow",
         Action = [
+          # Core services used by Terraform
           "s3:*",
           "dynamodb:*",
-          "apigateway:*",
-          "iam:*",
           "lambda:*",
+          "iam:*",
+          "apigateway:*",
+          "logs:*",
           "cloudwatch:*",
-          "logs:*"
+
+          # New additions for frontend + domain stack
+          "acm:*",
+          "cloudfront:*",
+          "route53:*"
         ],
         Resource = "*"
       }
     ]
   })
 }
+
 
 
 resource "aws_iam_role" "github_web_prod" {
