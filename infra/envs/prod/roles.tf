@@ -26,91 +26,29 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "github_infra_prod_policy" {
-  name = "github-infra-prod-policy"
+  name = "project1-serverless-infra-prod-policy"
   role = aws_iam_role.github_infra_prod.id
 
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
-
-      {
-        Effect = "Allow",
-        Action = "s3:*",
-        Resource = [
-          "arn:aws:s3:::project1-serverless-terraform-state",
-          "arn:aws:s3:::project1-serverless-terraform-state/*",
-          "arn:aws:s3:::project1-serverless-prod-website",
-          "arn:aws:s3:::project1-serverless-prod-website/*",
-          "arn:aws:s3:::project1-serverless-dev-website",
-          "arn:aws:s3:::project1-serverless-dev-website/*"
-        ]
-      },
-      {
-        Effect   = "Allow",
-        Action   = ["s3:ListAllMyBuckets"],
-        Resource = "*"
-      },
-
-
       {
         Effect = "Allow",
         Action = [
-          "dynamodb:GetItem",
-          "dynamodb:PutItem",
-          "dynamodb:DeleteItem",
-          "dynamodb:DescribeTable",
-          "dynamodb:Query",
-          "dynamodb:UpdateItem"
-        ],
-        Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-tf-locks"
-      },
-
-
-      {
-        Effect = "Allow",
-        Action = [
-          "iam:GetRole",
-          "iam:GetRolePolicy",
-          "iam:ListRolePolicies",
-          "iam:ListAttachedRolePolicies"
-        ],
-        Resource = [
-          "arn:aws:iam::608145123666:role/github-infra-prod",
-          "arn:aws:iam::608145123666:role/github-web-prod",
-          "arn:aws:iam::608145123666:role/github-infra-dev",
-          "arn:aws:iam::608145123666:role/github-web-dev"
-        ]
-      },
-
-
-      {
-        Effect = "Allow",
-        Action = [
-          "cloudfront:*"
-        ],
-        Resource = "*"
-      },
-
-
-      {
-        Effect = "Allow",
-        Action = [
-          "acm:*"
-        ],
-        Resource = "*"
-      },
-
-
-      {
-        Effect = "Allow",
-        Action = [
-          "route53:*"
+          "s3:*",
+          "dynamodb:*",
+          "apigateway:*",
+          "iam:*",
+          "lambda:*",
+          "cloudwatch:*",
+          "logs:*"
         ],
         Resource = "*"
       }
     ]
   })
 }
+
 
 resource "aws_iam_role" "github_web_prod" {
   name = "github-web-prod"
