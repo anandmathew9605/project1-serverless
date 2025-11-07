@@ -14,7 +14,7 @@ def lambda_handler(event, context):
         if method == "POST":
             # increment visitor count
             response = table.update_item(
-                Key={"pk": "visitor_count"},
+                Key={"UserID": "visitor_count"},
                 UpdateExpression="SET #c = if_not_exists(#c, :start) + :inc",
                 ExpressionAttributeNames={"#c": "count"},
                 ExpressionAttributeValues={":start": 0, ":inc": 1},
@@ -24,8 +24,10 @@ def lambda_handler(event, context):
             message = "Visitor count incremented"
 
         else:
+   
+   
             # fetch current count (GET)
-            response = table.get_item(Key={"pk": "visitor_count"})
+            response = table.get_item(Key={"UserID": "visitor_count"})
             count = int(response.get("Item", {}).get("count", 0))
             message = "Visitor count fetched"
 
