@@ -54,5 +54,5 @@ jobs:
           aws lambda update-function-code \
             --function-name project1-serverless-visitor-dev \
             --s3-bucket project1-serverless-backend-artifact \
-            --s3-key dev/visitor.zip \
+            --s3-key envs/dev/visitor.zip \
             --region ap-south-1
