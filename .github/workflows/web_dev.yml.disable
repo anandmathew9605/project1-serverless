@@ -4,7 +4,7 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "web/src/*"         
+      - "website/src/*"         
       - ".github/workflows/web_dev.yml"
 
 permissions:

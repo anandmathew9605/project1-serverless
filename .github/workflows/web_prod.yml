@@ -4,7 +4,7 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "web/src/**"
+      - "website/src/**"
       - ".github/workflows/web_prod.yml"
 
 permissions:
@@ -20,9 +20,9 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/github-web-prod
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-web-prod
           aws-region: ap-south-1
 
       - name: Sync to S3 (prod)
         run: |
-          aws s3 sync web/src s3://project1-serverless-prod-website --delete
+          aws s3 sync website/src s3://project1-serverless-prod-website --delete
