@@ -5,7 +5,7 @@ on:
     branches: ["dev"]
     paths:
       - "website/src/**"
-      - ".github/workflows/web_prod.yml"
+      - ".github/workflows/website_prod.yml"
 
 permissions:
   id-token: write
@@ -25,4 +25,4 @@ jobs:
 
       - name: Sync to S3 (prod)
         run: |
-          aws s3 sync website/src s3://project1-serverless-prod-website --delete
+          aws s3 sync website/src s3://project1-serverless-website-prod --delete

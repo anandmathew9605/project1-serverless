@@ -5,7 +5,7 @@ on:
     branches: ["dev"]
     paths:
       - "website/src/*"         
-      - ".github/workflows/web_dev.yml"
+      - ".github/workflows/website_dev.yml"
 
 permissions:
   id-token: write        
