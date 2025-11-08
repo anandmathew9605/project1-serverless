@@ -4,7 +4,7 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "infra/envs/dev/**"
+      - "infra/envs/dev/**" 
       - ".github/workflows/infra_dev.yml"
 
 permissions:
