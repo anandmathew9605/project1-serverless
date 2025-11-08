@@ -47,7 +47,7 @@ jobs:
 
       - name: Upload artifact to S3
         run: |
-          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-backend-artifact/envs/dev/visitor.zip
+          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-website-dev/artifacts/visitor.zip
 
       - name: Update Lambda function
         run: |
