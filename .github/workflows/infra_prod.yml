@@ -23,7 +23,7 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/github-infra-prod
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-prod
           aws-region: ap-south-1
 
       - name: Terraform Init & Plan (prod)
@@ -50,7 +50,7 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/github-infra-prod
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-prod
           aws-region: ap-south-1
 
       - name: Download tfplan artifact
