@@ -47,12 +47,12 @@ jobs:
 
       - name: Upload artifact to S3
         run: |
-          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-backend-artifact/envs/prod/visitor.zip
+          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-website-prod/artifacts/visitor.zip
 
       - name: Update Lambda function
         run: |
           aws lambda update-function-code \
             --function-name project1-serverless-visitor-prod \
-            --s3-bucket project1-serverless-backend-artifact \
-            --s3-key envs/prod/visitor.zip \
+            --s3-bucket project1-serverless-website-prod \
+            --s3-key artifacts/visitor.zip \
             --region ap-south-1
