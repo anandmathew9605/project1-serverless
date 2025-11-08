@@ -20,7 +20,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-website-dev
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-web-dev
           aws-region: ap-south-1
 
       - name: Sync to S3 (dev)
