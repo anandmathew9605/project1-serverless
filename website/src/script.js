@@ -310,8 +310,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // ----------------------------
 (async function updateVisitorCount() {
   const apiUrl = window.location.hostname.includes("serverless.anandmathew.site")
-  ? "https://6co3lc5hi3.execute-api.ap-south-1.amazonaws.com/count"
-  : "https://1s7a2cpdw5.execute-api.ap-south-1.amazonaws.com/count";
+  ? "https://18ik10v4a3.execute-api.ap-south-1.amazonaws.com/count"
+  : "https://nz9ry019oj.execute-api.ap-south-1.amazonaws.com/count";
 
   try {
     // Increment visitor count (POST)

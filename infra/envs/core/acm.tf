@@ -4,8 +4,9 @@ provider "aws" {
 
   default_tags {
     tags = {
-      project = "project1-serverless"
-      managed = "terraform"
+      project     = "project1-serverless"
+      managed     = "terraform"
+      environment = "production"
     }
   }
 }
@@ -20,7 +21,7 @@ locals {
   acm_val = tolist(aws_acm_certificate.prod.domain_validation_options)[0]
 }
 
-resource "aws_route53_record" "acm_validation" {
+resource "aws_route53_record" "acm" {
   zone_id = "Z03061303E440FJRS5KB1"
   name    = local.acm_val.resource_record_name
   type    = local.acm_val.resource_record_type
@@ -31,5 +32,5 @@ resource "aws_route53_record" "acm_validation" {
 resource "aws_acm_certificate_validation" "prod" {
   provider                = aws.us_east_1
   certificate_arn         = aws_acm_certificate.prod.arn
-  validation_record_fqdns = [aws_route53_record.acm_validation.fqdn]
+  validation_record_fqdns = [aws_route53_record.acm.fqdn]
 }
