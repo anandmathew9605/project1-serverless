@@ -1,4 +1,4 @@
-name: infra_prod
+name: infra-prod
 
 on:
   push:
