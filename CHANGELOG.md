@@ -16,11 +16,17 @@ This project follows **semantic versioning** (`MAJOR.MINOR.PATCH`).
 
 ---
 
-## [v0.2.0] – Planned
-### 🚀 Feature Expansion & Scalability
-- Introduce new managed services and expand the serverless stack for greater functionality.  
-- Enhance Terraform configuration modularity and environment structure.  
-- Improve CI/CD workflow efficiency and build validation processes.  
+## [v0.2.0] – 2025-11-10
+### 🚀 Dynamic Backend Integration & Automation Enhancements
+- Added a **serverless backend API** using **AWS Lambda**, **API Gateway**, and **DynamoDB** for visitor tracking.  
+- Implemented **backend CI/CD pipelines** (`backend-dev.yml`, `backend-prod.yml`) for automated Lambda deployment via S3 artifact uploads.  
+- Separated **IAM roles per component** — web, backend, infra, and lambda — for clean isolation and improved security posture.  
+- Introduced **modular Terraform structure** across `core`, `dev`, and `prod` environments for clarity and scalability.  
+- Moved **ACM and Route 53** resources to `core` environment with shared remote-state outputs for production CloudFront.  
+- Verified **end-to-end deployment automation**:  
+  - `dev` → direct S3 website hosting.  
+  - `prod` → CloudFront + ACM + Route 53 DNS alias.  
+- Conducted **drift validation** and confirmed both environments are consistent and stable.  
 
 ---
 
@@ -45,3 +51,8 @@ This project follows **semantic versioning** (`MAJOR.MINOR.PATCH`).
 - Implement infrastructure drift detection and change monitoring.  
 - Enhance deployment strategies with canary or blue-green rollouts.  
 - Integrate observability tooling for end-to-end visibility and performance tracking.  
+
+---
+
+#### 🧭 Maintained by [Anand Mathew](https://serverless.anandmathew.site)  
+_“Project1 – Serverless Architecture: built with Terraform, AWS, and automation-first principles.”_
