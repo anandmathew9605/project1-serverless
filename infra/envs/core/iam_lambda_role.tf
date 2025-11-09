@@ -26,9 +26,13 @@ resource "aws_iam_role_policy" "lambda_dev_policy" {
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-visitor-dev"
       },
       {
-        Effect   = "Allow",
-        Action   = "logs:*",
-        Resource = "arn:aws:logs:ap-south-1:608145123666:log-group:/aws/lambda/project1-serverless-visitor-dev:*"
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "arn:aws:logs:ap-south-1:608145123666:log-group:/aws/lambda/*"
       },
       {
         Effect   = "Allow",
@@ -67,9 +71,13 @@ resource "aws_iam_role_policy" "lambda_prod_policy" {
         Resource = "arn:aws:dynamodb:ap-south-1:608145123666:table/project1-serverless-visitor-prod"
       },
       {
-        Effect   = "Allow",
-        Action   = "logs:*",
-        Resource = "arn:aws:logs:ap-south-1:608145123666:log-group:/aws/lambda/project1-serverless-visitor-prod:*"
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "arn:aws:logs:ap-south-1:608145123666:log-group:/aws/lambda/*"
       },
       {
         Effect   = "Allow",

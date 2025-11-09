@@ -16,7 +16,7 @@ This project follows **semantic versioning** (`MAJOR.MINOR.PATCH`).
 
 ---
 
-## [v0.2.0] – 2025-11-08
+## [v0.2.0] – 2025-11-09
 ### 🚀 Dynamic Backend Integration & Automation Enhancements
 - Added a **serverless backend API** using **AWS Lambda**, **API Gateway**, and **DynamoDB** for dynamic visitor tracking.  
 - Implemented **backend CI/CD pipelines** (`backend-dev.yml`, `backend-prod.yml`) for automated Lambda deployment via S3 artifact uploads.  
