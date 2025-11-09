@@ -2,7 +2,7 @@ name: infra-prod
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
     paths:
       - "infra/envs/prod/**"
       - ".github/workflows/infra_prod.yml"

@@ -2,7 +2,7 @@ name: web-prod
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
     paths:
       - "website/src/**"
       - ".github/workflows/website_prod.yml"

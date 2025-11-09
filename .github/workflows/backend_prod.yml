@@ -2,7 +2,7 @@ name: backend-prod
 
 on:
   push:
-    branches: ["dev"]
+    branches: ["main"]
     paths:
       - "backend/src/**"
       - ".github/workflows/backend_prod.yml"
