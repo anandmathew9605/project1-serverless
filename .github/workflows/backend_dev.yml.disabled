@@ -1,18 +1,18 @@
-name: backend-prod
+name: backend-dev
 
 on:
   push:
     branches: ["dev"]
     paths:
       - "backend/src/**"
-      - ".github/workflows/backend_prod.yml"
+      - ".github/workflows/backend_dev.yml"
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  backend-prod:
+  backend-dev:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install dependencies (if any)
+      - name: Install dependencies
         run: |
           pip install boto3 pytest
 
@@ -42,17 +42,17 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-backend-prod
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-backend-dev
           aws-region: ap-south-1
 
       - name: Upload artifact to S3
         run: |
-          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-website-prod/artifacts/visitor.zip
+          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-website-dev/artifacts/visitor.zip
 
       - name: Update Lambda function
         run: |
           aws lambda update-function-code \
-            --function-name project1-serverless-visitor-prod \
-            --s3-bucket project1-serverless-website-prod \
+            --function-name project1-serverless-visitor-dev \
+            --s3-bucket project1-serverless-website-dev \
             --s3-key artifacts/visitor.zip \
             --region ap-south-1

@@ -1,18 +1,18 @@
-name: infra-dev
+name: infra-prod
 
 on:
   push:
     branches: ["dev"]
     paths:
-      - "infra/envs/dev/**" 
-      - ".github/workflows/infra_dev.yml"
+      - "infra/envs/prod/**"
+      - ".github/workflows/infra_prod.yml"
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-  infra_dev_plan:
+  infra_prod_plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,12 +23,12 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-dev
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-prod
           aws-region: ap-south-1
 
-      - name: Terraform Init & Plan
+      - name: Terraform Init & Plan (prod)
         run: |
-          cd infra/envs/dev
+          cd infra/envs/prod
           terraform init
           terraform plan -out=tfplan
 
@@ -36,10 +36,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: infra/envs/dev/tfplan
+          path: infra/envs/prod/tfplan
 
-  infra_dev_apply:
-    needs: [infra_dev_plan]
+  infra_prod_apply:
+    needs: [infra_prod_plan] 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -50,17 +50,17 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-dev
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-prod
           aws-region: ap-south-1
 
       - name: Download tfplan artifact
         uses: actions/download-artifact@v4
         with:
           name: tfplan
-          path: infra/envs/dev
+          path: infra/envs/prod
 
-      - name: Terraform init & apply (dev)
+      - name: Terraform init & apply (prod)
         run: |
-          cd infra/envs/dev
+          cd infra/envs/prod
           terraform init
           terraform apply -auto-approve tfplan

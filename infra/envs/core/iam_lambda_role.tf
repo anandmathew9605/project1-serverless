@@ -43,6 +43,7 @@ resource "aws_iam_role_policy" "lambda_dev_policy" {
   })
 }
 
+
 resource "aws_iam_role" "lambda_prod" {
   name = "project1-serverless-lambda-prod"
 

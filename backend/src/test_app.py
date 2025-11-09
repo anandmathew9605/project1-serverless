@@ -1,5 +1,5 @@
 import json
-import app   # This imports your Lambda's app.py file
+import app   
 
 def test_lambda_handler():
     # Simulate an API Gateway event
