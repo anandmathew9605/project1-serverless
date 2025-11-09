@@ -1,0 +1,29 @@
+name: web-dev
+
+on:
+  push:
+    branches: ["dev"]
+    paths:
+      - "website/src/*"         
+      - ".github/workflows/website_dev.yml"
+
+permissions:
+  id-token: write        
+  contents: read
+
+jobs:
+  web_dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-web-dev
+          aws-region: ap-south-1
+
+      - name: Sync to S3 (dev)
+        run: |
+          aws s3 sync website/src s3://project1-serverless-website-dev --delete
+          

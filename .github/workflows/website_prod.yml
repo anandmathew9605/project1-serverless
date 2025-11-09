@@ -1,0 +1,28 @@
+name: web-prod
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "website/src/**"
+      - ".github/workflows/website_prod.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  web_prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS (OIDC)
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-web-prod
+          aws-region: ap-south-1
+
+      - name: Sync to S3 (prod)
+        run: |
+          aws s3 sync website/src s3://project1-serverless-website-prod --delete

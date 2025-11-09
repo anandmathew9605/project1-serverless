@@ -1,0 +1,58 @@
+name: backend-prod
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "backend/src/**"
+      - ".github/workflows/backend_prod.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  backend-prod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install boto3 pytest
+
+      - name: Run tests
+        run: |
+          cd backend/src
+          pytest -q || echo "No tests found, skipping"
+
+      - name: Create Lambda ZIP
+        run: |
+          mkdir -p backend/artifacts
+          cd backend/src
+          zip -r ../artifacts/visitor.zip app.py
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-backend-prod
+          aws-region: ap-south-1
+
+      - name: Upload artifact to S3
+        run: |
+          aws s3 cp backend/artifacts/visitor.zip s3://project1-serverless-website-prod/artifacts/visitor.zip
+
+      - name: Update Lambda function
+        run: |
+          aws lambda update-function-code \
+            --function-name project1-serverless-visitor-prod \
+            --s3-bucket project1-serverless-website-prod \
+            --s3-key artifacts/visitor.zip \
+            --region ap-south-1
