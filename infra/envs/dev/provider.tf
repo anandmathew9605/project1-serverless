@@ -7,9 +7,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      project     = "project1-serverless"
-      environment = "development"
-      managed     = "terraform"
+      project = "project1-serverless"
+      managed = "terraform"
     }
   }
 }

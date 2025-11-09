@@ -1,68 +1,54 @@
-# --------------------------
 # Terraform
-# --------------------------
 .terraform/
 *.tfstate
 *.tfstate.*
-*.tfplan
 crash.log
 override.tf
 override.tf.json
 *_override.tf
+.terraform.lock.hcl    # commit this file (remove this line if you DON'T want it tracked)
+
+# backend config files (if you prefer to keep them out of repo)
+# backend-dev.tfbackend
+# backend-prod.tfbackend
+
+# Terraform vars (may contain secrets)
 *.tfvars
 *.tfvars.json
 secret*.tfvars
 
-# --------------------------
 # CLI / OS
-# --------------------------
 .env
 .env.*.local
 .DS_Store
 Thumbs.db
 
-# --------------------------
 # Logs
-# --------------------------
 *.log
-*.tmp
 
-# --------------------------
-# Editor / IDE
-# --------------------------
+# Editor/IDE
 .vscode/
 .idea/
 *.iml
 
-# --------------------------
-# Node / Frontend Builds
-# --------------------------
+# Node/build (frontend)
 node_modules/
 dist/
 build/
 npm-debug.log
 yarn-error.log
 
-# --------------------------
-# GitHub Actions
-# --------------------------
+# GitHub Actions artifacts
 .github/actions/**/dist/
 .github/actions/**/node_modules/
-.github/workflows/*.tmp
 
-# --------------------------
 # Credentials / AWS
-# --------------------------
 aws_credentials
 *.pem
 *.key
 
-# --------------------------
-# Artifacts / Misc
-# --------------------------
-backend/artifacts/
+# Misc
 coverage/
 *.bak
 *.swp
-*.zip
-*.tar.gz
+

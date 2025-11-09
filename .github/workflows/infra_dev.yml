@@ -4,7 +4,7 @@ on:
   push:
     branches: ["dev"]
     paths:
-      - "infra/envs/dev/**" 
+      - "infra/envs/dev/**"
       - ".github/workflows/infra_dev.yml"
 
 permissions:
@@ -23,7 +23,7 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-dev
+          role-to-assume: arn:aws:iam::608145123666:role/github-infra-dev
           aws-region: ap-south-1
 
       - name: Terraform Init & Plan
@@ -50,7 +50,7 @@ jobs:
       - name: Configure AWS (OIDC)
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: arn:aws:iam::608145123666:role/project1-serverless-infra-dev
+          role-to-assume: arn:aws:iam::608145123666:role/github-infra-dev
           aws-region: ap-south-1
 
       - name: Download tfplan artifact
