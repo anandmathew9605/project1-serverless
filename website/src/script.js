@@ -6,7 +6,7 @@ class ThemeManager {
         
         this.moonIcon = this.themeToggle.querySelector('.moon-icon');
         this.sunIcon = this.themeToggle.querySelector('.sun-icon');
-        this.currentTheme = this.getStoredTheme() || 'light';
+        this.currentTheme = this.getStoredTheme() || 'dark';
         
         this.init();
     }
@@ -200,114 +200,41 @@ class PageAnimations {
     }
 }
 
-// Enhanced Title Interactions
-class TitleEnhancer {
-    constructor() {
-        this.titleElement = document.querySelector('.title');
-        this.init();
-    }
-    
-    init() {
-        this.titleElement.addEventListener('click', () => {
-            this.triggerClickEffect();
-        });
-        
-        // Add typing effect on load
-        this.addTypingEffect();
-    }
-    
-    triggerClickEffect() {
-        // Create ripple effect
-        this.titleElement.style.animation = 'none';
-        this.titleElement.style.transform = 'scale(1.1) rotate(2deg)';
-        
-        setTimeout(() => {
-            this.titleElement.style.transform = '';
-            this.titleElement.style.animation = 'gradientShift 4s ease-in-out infinite';
-        }, 300);
-        
-        // Create floating particles
-        this.createParticles();
-    }
-    
-    createParticles() {
-        const rect = this.titleElement.getBoundingClientRect();
-        const particleConfig = {
-            count: 8,
-            colors: ['#4a90e2', '#28a745', '#ffc107', '#e74c3c'],
-            minDistance: 100,
-            maxDistance: 150,
-            minDuration: 800,
-            maxDuration: 1200
-        };
-        
-        for (let i = 0; i < particleConfig.count; i++) {
-            const particle = document.createElement('div');
-            particle.style.cssText = `
-                position: fixed;
-                width: 6px;
-                height: 6px;
-                background: ${particleConfig.colors[Math.floor(Math.random() * particleConfig.colors.length)]};
-                border-radius: 50%;
-                pointer-events: none;
-                z-index: 1000;
-                left: ${rect.left + rect.width / 2}px;
-                top: ${rect.top + rect.height / 2}px;
-            `;
-            
-            document.body.appendChild(particle);
-            
-            // Animate particle
-            const angle = (Math.PI * 2 * i) / 8;
-            const distance = particleConfig.minDistance + Math.random() * (particleConfig.maxDistance - particleConfig.minDistance);
-            const duration = particleConfig.minDuration + Math.random() * (particleConfig.maxDuration - particleConfig.minDuration);
-            
-            particle.animate([
-                { 
-                    transform: 'translate(0, 0) scale(1)',
-                    opacity: 1
-                },
-                { 
-                    transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0)`,
-                    opacity: 0
-                }
-            ], {
-                duration: duration,
-                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
-            }).onfinish = () => {
-                particle.remove();
-            };
-        }
-    }
-    
-    addTypingEffect() {
-        const originalText = this.titleElement.textContent;
-        this.titleElement.textContent = '';
-        
-        let index = 0;
-        const type = () => {
-            if (index < originalText.length) {
-                this.titleElement.textContent += originalText[index];
-                index++;
-                setTimeout(type, 80);
-            }
-        };
-        
-        setTimeout(type, 100);
-    }
-}
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new ThemeManager();
     new ProjectCards();
     new PageAnimations();
-    new TitleEnhancer();
 });
 
 // ----------------------------
 // Visitor Counter Integration
 // ----------------------------
+
+// Function to get ordinal suffix (st, nd, rd, th)
+function getOrdinalSuffix(number) {
+  const lastDigit = number % 10;
+  const lastTwoDigits = number % 100;
+  
+  // Handle special cases (11th, 12th, 13th)
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return number + "th";
+  }
+  
+  // Handle regular cases
+  switch (lastDigit) {
+    case 1:
+      return number + "st";
+    case 2:
+      return number + "nd";
+    case 3:
+      return number + "rd";
+    default:
+      return number + "th";
+  }
+}
+
 (async function updateVisitorCount() {
   const apiUrl = window.location.hostname.includes("serverless.anandmathew.site")
   ? "https://18ik10v4a3.execute-api.ap-south-1.amazonaws.com/count"
@@ -321,10 +248,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    // Update visitor count in HTML
+    // Update visitor count in HTML with proper ordinal suffix
     const visitorElement = document.querySelector(".visitor-count");
     if (visitorElement && data.count !== undefined) {
-      visitorElement.textContent = data.count + "th";
+      visitorElement.textContent = getOrdinalSuffix(data.count);
     }
   } catch (error) {
     console.error("Visitor counter error:", error);
