@@ -1,19 +1,23 @@
+resource "aws_cloudfront_origin_access_identity" "prod" {
+  comment = "OAI for project1-serverless-website-prod"
+}
+
 resource "aws_cloudfront_distribution" "prod" {
   enabled             = true
   default_root_object = "index.html"
   aliases             = ["serverless.anandmathew.site"]
 
   origin {
-    domain_name = aws_s3_bucket.prod_website.bucket_regional_domain_name
-    origin_id   = "s3-prod-website"
+    domain_name = "project1-serverless-website-prod.s3.ap-south-1.amazonaws.com"
+    origin_id   = "s3_prod_website"
 
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.prod_oai.cloudfront_access_identity_path
+      origin_access_identity = aws_cloudfront_origin_access_identity.prod.cloudfront_access_identity_path
     }
   }
 
   default_cache_behavior {
-    target_origin_id       = "s3-prod-website"
+    target_origin_id       = "s3_prod_website"
     viewer_protocol_policy = "redirect-to-https"
     allowed_methods        = ["GET", "HEAD"]
     cached_methods         = ["GET", "HEAD"]
@@ -25,7 +29,7 @@ resource "aws_cloudfront_distribution" "prod" {
   }
 
   viewer_certificate {
-    acm_certificate_arn      = aws_acm_certificate.prod.arn
+    acm_certificate_arn      = "arn:aws:acm:us-east-1:608145123666:certificate/d54e5ffc-0954-4b82-ad46-6bd13170bd93"
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
@@ -35,13 +39,31 @@ resource "aws_cloudfront_distribution" "prod" {
   }
 
   tags = {
-    project = "project1-serverless"
-    managed = "terraform"
+    project     = "project1-serverless"
+    environment = "production"
+    managed     = "terraform"
   }
 }
 
-resource "aws_route53_record" "prod_alias" {
-  zone_id = aws_route53_zone.main.zone_id
+data "aws_iam_policy_document" "prod_allow_cf_oai" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "AWS"
+      identifiers = [aws_cloudfront_origin_access_identity.prod.iam_arn]
+    }
+    actions   = ["s3:GetObject"]
+    resources = ["arn:aws:s3:::project1-serverless-website-prod/*"]
+  }
+}
+
+resource "aws_s3_bucket_policy" "prod" {
+  bucket = "project1-serverless-website-prod"
+  policy = data.aws_iam_policy_document.prod_allow_cf_oai.json
+}
+
+resource "aws_route53_record" "prod" {
+  zone_id = "Z03061303E440FJRS5KB1"
   name    = "serverless"
   type    = "A"
 
@@ -51,27 +73,3 @@ resource "aws_route53_record" "prod_alias" {
     evaluate_target_health = false
   }
 }
-
-
-resource "aws_cloudfront_origin_access_identity" "prod_oai" {
-  comment = "Origin Access Identity for production CloudFront distribution"
-}
-
-data "aws_iam_policy_document" "prod_allow_cf_oai" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = [aws_cloudfront_origin_access_identity.prod_oai.iam_arn]
-    }
-    actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.prod_website.arn}/*"]
-  }
-}
-
-resource "aws_s3_bucket_policy" "prod" {
-  bucket = aws_s3_bucket.prod_website.id
-  policy = data.aws_iam_policy_document.prod_allow_cf_oai.json
-}
-
