@@ -6,7 +6,7 @@ provider "aws" {
     tags = {
       project     = "project1-serverless"
       managed     = "terraform"
-      environment = "production"
+      environment = "core"
     }
   }
 }
